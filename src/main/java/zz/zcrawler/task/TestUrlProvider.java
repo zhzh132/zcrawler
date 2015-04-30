@@ -7,11 +7,16 @@ import zz.zcrawler.url.WebURL;
 
 public class TestUrlProvider implements InitialUrlProvider {
 
-	public List<WebURL> getInitialUrls() {
-		ArrayList<WebURL> urls = new ArrayList<WebURL>();
+	private List<WebURL> urls;
+	
+	public TestUrlProvider() {
+		urls = new ArrayList<WebURL>();
 		WebURL u = new WebURL();
-		u.setURL("www.163.com");
+		u.setURL("http://www.163.com");
 		urls.add(u);
+	}
+	
+	public List<WebURL> getInitialUrls() {
 		return urls;
 	}
 
