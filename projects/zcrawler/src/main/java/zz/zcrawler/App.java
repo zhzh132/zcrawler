@@ -21,11 +21,11 @@ public class App
 		log.debug("Crawler Start.");
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		CrawlerConfig config = context.getBean(CrawlerConfig.class);
-		log.debug(config.getProperty("zcrawler.maxDepth"));
+		//CrawlerConfig config = context.getBean(CrawlerConfig.class);
+		//log.debug(config.getProperty("zcrawler.maxDepth"));
 		
 		TaskManager tm = context.getBean(TaskManager.class);
-		
+		tm.getInitialUrlProvider().getInitialUrls();
 		context.close();
 		log.debug("Crawler Stop.");
     }
