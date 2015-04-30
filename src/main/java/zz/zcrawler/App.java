@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import zz.zcrawler.conf.CrawlerConfig;
+import zz.zcrawler.task.TaskManager;
 
 /**
  * Hello world!
@@ -22,6 +23,8 @@ public class App
 		
 		CrawlerConfig config = context.getBean(CrawlerConfig.class);
 		log.debug(config.getProperty("zcrawler.maxDepth"));
+		
+		TaskManager tm = context.getBean(TaskManager.class);
 		
 		context.close();
 		log.debug("Crawler Stop.");

@@ -4,4 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="crawlerConfig" class="zz.zcrawler.conf.CrawlerConfig"></bean>
+	
+	<bean id="testUrlProvider"
+		class="zz.zcrawler.task.TestUrlProvider">
+	</bean>
+	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
+		<property name="initialUrlProvider" ref="testUrlProvider"></property>
+	</bean>
 </beans>
