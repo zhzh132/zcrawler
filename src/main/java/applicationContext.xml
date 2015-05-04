@@ -5,10 +5,13 @@
 
 	<bean id="crawlerConfig" class="zz.zcrawler.conf.CrawlerConfig"></bean>
 	
-	<bean id="testUrlProvider"
-		class="zz.zcrawler.task.TestUrlProvider">
-	</bean>
+	
+	<bean id="testSiteDao" class="zz.zcrawler.data.impl.TestSiteDao"></bean>
 	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
-		<property name="initialUrlProvider" ref="testUrlProvider"></property>
+		<property name="siteDao" ref="testSiteDao"></property>
 	</bean>
+	
+	
+	
+	
 </beans>

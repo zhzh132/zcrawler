@@ -1,7 +1,7 @@
 package zz.zcrawler.conf;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -17,11 +17,9 @@ public class CrawlerConfig {
 	}
 	
 	private void loadProperties(String file) {
-		FileInputStream in = null;
+		InputStream in = null;
 		try {
-			String CONFIG_PATH= ClassLoader.getSystemResource(file)
-					.getPath();
-			in = new FileInputStream(CONFIG_PATH);
+			in = this.getClass().getClassLoader().getResourceAsStream(file);
 			pro.load(in);
 			log.debug("Properties loaded form " + file);
 		} catch (Exception e) {

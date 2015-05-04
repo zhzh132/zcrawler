@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import zz.zcrawler.conf.CrawlerConfig;
+import zz.zcrawler.task.Task;
 import zz.zcrawler.task.TaskManager;
 
 /**
@@ -25,7 +26,11 @@ public class App
 		//log.debug(config.getProperty("zcrawler.maxDepth"));
 		
 		TaskManager tm = context.getBean(TaskManager.class);
-		tm.getInitialUrlProvider().getInitialUrls();
+		tm.init();
+		Task t = tm.getTask();
+		
+		log.debug(t.getUrls().get(0));
+		
 		context.close();
 		log.debug("Crawler Stop.");
     }
