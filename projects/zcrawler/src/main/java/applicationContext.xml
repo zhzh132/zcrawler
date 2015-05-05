@@ -5,13 +5,11 @@
 
 	<bean id="crawlerConfig" class="zz.zcrawler.conf.CrawlerConfig"></bean>
 	
-	
+	<bean id="memURLStorage" class="zz.zcrawler.url.MemURLStorage"></bean>
 	<bean id="testSiteDao" class="zz.zcrawler.data.impl.TestSiteDao"></bean>
 	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
-		<property name="siteDao" ref="testSiteDao"></property>
+		<property name="taskSize" value="10"></property>
+		<property name="urlStorage" ref="memURLStorage"></property>
 	</bean>
-	
-	
-	
 	
 </beans>
