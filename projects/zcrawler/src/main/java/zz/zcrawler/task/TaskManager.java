@@ -1,25 +1,41 @@
 package zz.zcrawler.task;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 import zz.zcrawler.url.URLStorage;
+import zz.zcrawler.url.WebURL;
 
 public class TaskManager {
 
-	private Queue<Task> taskQueue;
 	private int taskSize;
 	private URLStorage urlStorage;
+	private boolean stopped = false;
 
 	public TaskManager() {
-		this.taskQueue = new LinkedList<Task>();
 	}
 	
 	
+	// return null if there is no task
 	public synchronized Task getTask() {
-		return taskQueue.poll();
+		if(stopped) {
+			Task t = new Task();
+			t.setType(Task.STOP);
+			return t;
+		}
+		
+		List<WebURL> urlList = urlStorage.get(taskSize);
+		if(urlList.isEmpty()) {
+			return null;
+		}
+		Task t = new Task();
+		t.setUrls(urlList);
+		return t;
 	}
-
+	
+	public void stop() {
+		this.stopped = true;
+	}
+	
 
 	public int getTaskSize() {
 		return taskSize;
@@ -39,5 +55,6 @@ public class TaskManager {
 	public void setUrlStorage(URLStorage urlStorage) {
 		this.urlStorage = urlStorage;
 	}
-	
+
+
 }
