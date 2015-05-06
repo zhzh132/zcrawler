@@ -1,9 +1,9 @@
 package zz.zcrawler.data;
 
+import org.json.JSONObject;
+
 public interface ConfigStorage {
 
-	String getString(String key);
-	String[] getStringArray(String key);
-	int getInt(String key);
-	Object get(String key);
+	JSONObject getConfig();
+	JSONObject reloadConfig();
 }
