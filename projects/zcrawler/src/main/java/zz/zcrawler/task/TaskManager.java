@@ -2,7 +2,7 @@ package zz.zcrawler.task;
 
 import java.util.List;
 
-import zz.zcrawler.url.URLStorage;
+import zz.zcrawler.data.URLStorage;
 import zz.zcrawler.url.WebURL;
 
 public class TaskManager {

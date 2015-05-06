@@ -1,6 +1,8 @@
-package zz.zcrawler.url;
+package zz.zcrawler.data;
 
 import java.util.List;
+
+import zz.zcrawler.url.WebURL;
 
 public interface URLStorage {
 
