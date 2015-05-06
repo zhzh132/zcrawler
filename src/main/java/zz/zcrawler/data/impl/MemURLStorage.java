@@ -1,8 +1,11 @@
-package zz.zcrawler.url;
+package zz.zcrawler.data.impl;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+
+import zz.zcrawler.data.URLStorage;
+import zz.zcrawler.url.WebURL;
 
 public class MemURLStorage implements URLStorage {
 

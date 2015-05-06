@@ -3,13 +3,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="crawlerConfig" class="zz.zcrawler.conf.CrawlerConfig"></bean>
+	<bean id="memConfigStorage"
+		class="zz.zcrawler.data.impl.MemConfigStorage">
+	</bean>
+	<bean id="memURLStorage" class="zz.zcrawler.data.impl.MemURLStorage"></bean>
 	
-	<bean id="memURLStorage" class="zz.zcrawler.url.MemURLStorage"></bean>
 	<bean id="testSiteDao" class="zz.zcrawler.data.impl.TestSiteDao"></bean>
+	
 	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
 		<property name="taskSize" value="10"></property>
 		<property name="urlStorage" ref="memURLStorage"></property>
 	</bean>
+	
 	
 </beans>

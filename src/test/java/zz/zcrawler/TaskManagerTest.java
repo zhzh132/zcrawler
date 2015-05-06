@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import zz.zcrawler.data.impl.MemURLStorage;
 import zz.zcrawler.task.Task;
 import zz.zcrawler.task.TaskManager;
-import zz.zcrawler.url.MemURLStorage;
 
 public class TaskManagerTest {
 

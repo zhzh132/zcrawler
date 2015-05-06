@@ -7,11 +7,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import zz.zcrawler.common.Site;
-import zz.zcrawler.conf.CrawlerConfig;
 import zz.zcrawler.data.SiteDao;
-import zz.zcrawler.task.Task;
-import zz.zcrawler.task.TaskManager;
-import zz.zcrawler.url.URLStorage;
+import zz.zcrawler.data.URLStorage;
 import zz.zcrawler.url.WebURL;
 
 /**
@@ -29,8 +26,6 @@ public class App
 		log.debug("Crawler Start.");
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		//CrawlerConfig config = context.getBean(CrawlerConfig.class);
-		//log.debug(config.getProperty("zcrawler.maxDepth"));
 		
 		init();
 		
