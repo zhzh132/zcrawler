@@ -7,10 +7,10 @@ import zz.zcrawler.url.WebURL;
 
 public class Task {
 
-	public static final String LIST_PAGE = "LIST_PAGE";
-	public static final String CONTENT_PAGE = "CONTENT_PAGE";
+	public static final String STOP = "STOP";
+	public static final String NORMAL = "NORMAL";
 	
-	private String type;
+	private String type = NORMAL;
 	private List<WebURL> urls = new ArrayList<WebURL>();
 	
 	public String getType() {
