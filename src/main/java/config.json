@@ -4,7 +4,9 @@
   },
   "sites":{
     "163.com":{
-      "depth":3
+      "depth":3,
+      "seed":["http://www.163.com"],
+      "isActive":true
     }
   }
 }

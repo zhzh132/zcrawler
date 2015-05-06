@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import zz.zcrawler.common.Site;
-import zz.zcrawler.data.SiteDao;
+import zz.zcrawler.data.ConfigStorage;
 import zz.zcrawler.data.URLStorage;
 import zz.zcrawler.url.WebURL;
 
@@ -37,17 +38,22 @@ public class App
 	
 	public static void init() {
 		// load sites to crawl
-		SiteDao siteDao = context.getBean("testSiteDao", SiteDao.class);
+		ConfigStorage config = context.getBean(ConfigStorage.class);
+		config.loadConfig();
+		
 		URLStorage urlStorage = context.getBean("memURLStorage", URLStorage.class);
-		List<Site> sites = siteDao.getAllSites();
-		for(Site s : sites) {
-			List<String> urls = s.getEntranceUrls();
-			for(String u : urls) {
+		List<String> sites = config.getActiveDomains();
+		for(String s : sites) {
+			JSONObject site = config.getSite(s);
+			JSONArray urls = site.getJSONArray("seed");
+			for(int i = 0; i < urls.length(); i++) {
+				String u = urls.getString(i);
 				WebURL webUrl = new WebURL();
 				webUrl.setURL(u);
 				webUrl.setPageType(WebURL.LIST_PAGE);
 				urlStorage.putUrlToVisit(webUrl);
 			}
 		}
+		
 	}
 }
