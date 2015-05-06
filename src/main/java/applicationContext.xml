@@ -3,8 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="memConfigStorage"
-		class="zz.zcrawler.data.impl.MemConfigStorage">
+	<bean id="localFileConfigStorage"
+		class="zz.zcrawler.data.impl.LocalFileConfigStorage">
 	</bean>
 	<bean id="memURLStorage" class="zz.zcrawler.data.impl.MemURLStorage"></bean>
 	
