@@ -4,8 +4,13 @@
   },
   "sites":{
     "163.com":{
-      "depth":3,
+      "maxDepth":1,
       "seed":["http://www.163.com"],
+      "isActive":false
+    },
+    "zydh123.net": {
+      "maxDepth":1,
+      "seed":["http://zydh123.net/"],
       "isActive":true
     }
   }

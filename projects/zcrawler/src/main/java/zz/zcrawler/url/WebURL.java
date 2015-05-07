@@ -31,7 +31,7 @@ public class WebURL implements Serializable {
 	private int docid;
 	private int parentDocid;
 	private String parentUrl;
-	private short depth;
+	private int depth;
 	private String domain;
 	private String subDomain;
 	private String path;
@@ -118,11 +118,11 @@ public class WebURL implements Serializable {
 	 *         depth 0. Urls that are extracted from seed Urls are at depth 1,
 	 *         etc.
 	 */
-	public short getDepth() {
+	public int getDepth() {
 		return depth;
 	}
 
-	public void setDepth(short depth) {
+	public void setDepth(int depth) {
 		this.depth = depth;
 	}
 

@@ -52,6 +52,13 @@ public class Task {
 		StringBuilder sb = new StringBuilder("Task ---- ");
 		sb.append("Type: ").append(this.type).append("  ");
 		sb.append("Size: ").append(urls.size());
+		if(this.urls.size() > 0) {
+			sb.append("--------").append(System.lineSeparator());
+			for(WebURL u : urls) {
+				sb.append(u.getURL()).append(System.lineSeparator());
+			}
+			sb.append("--------").append(System.lineSeparator());
+		}
 		return sb.toString();
 	}
 
