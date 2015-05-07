@@ -10,7 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import zz.zcrawler.data.ConfigStorage;
 import zz.zcrawler.data.URLStorage;
+import zz.zcrawler.task.TaskManager;
 import zz.zcrawler.url.WebURL;
+import zz.zcrawler.worker.WorkerThread;
 
 /**
  * Hello world!
@@ -20,7 +22,7 @@ public class App
 {
 	static Log log = LogFactory.getLog(App.class);
 	
-	static ClassPathXmlApplicationContext context;
+	public static ClassPathXmlApplicationContext context;
 	
 	public static void main( String[] args )
     {
@@ -30,12 +32,41 @@ public class App
 		
 		init();
 		
+		WorkerRegister register = context.getBean(WorkerRegister.class);
+		startWorkers(register);
 		
-		
+		TaskManager tm = context.getBean(TaskManager.class);
+		while(tm.hasMoreTask() || !register.allWorkersWaitingOrDead()) {
+			sleep(10);
+		}
+		tm.stop();
+		sleep(10);
 		context.close();
 		log.debug("Crawler Stop.");
     }
 	
+	private static void sleep(int second) {
+		try {
+			Thread.sleep(second * 1000);
+		} catch (InterruptedException e) {
+		}
+	}
+	
+	private static void startWorkers(WorkerRegister register) {
+		WorkerThread worker = createWorkerThread("Worker 1");
+		register.register(worker);
+		worker.start();
+	}
+	
+	private static WorkerThread createWorkerThread(String name) {
+		WorkerThread worker = new WorkerThread();
+		worker.setName(name);
+		worker.setConfigStorage(context.getBean(ConfigStorage.class));
+		worker.setTaskManager(context.getBean(TaskManager.class));
+		worker.setUrlStorage(context.getBean("memURLStorage", URLStorage.class));
+		return worker;
+	}
+
 	public static void init() {
 		// load sites to crawl
 		ConfigStorage config = context.getBean(ConfigStorage.class);

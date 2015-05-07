@@ -53,4 +53,9 @@ public class MemURLStorage implements URLStorage {
 		
 	}
 
+	@Override
+	public boolean hasUrlToVisit() {
+		return !this.urlToVisit.isEmpty();
+	}
+
 }

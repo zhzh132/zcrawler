@@ -14,4 +14,5 @@
 	</bean>
 	
 	
+	<bean id="workerRegister" class="zz.zcrawler.WorkerRegister"></bean>
 </beans>
