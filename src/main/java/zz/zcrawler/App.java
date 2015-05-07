@@ -72,6 +72,12 @@ public class App
 		ConfigStorage config = context.getBean(ConfigStorage.class);
 		config.loadConfig();
 		
+		int taskSize = config.getGlobalConfig().optInt("taskSize");
+		if(taskSize > 0) {
+			TaskManager tm = context.getBean(TaskManager.class);
+			tm.setTaskSize(taskSize);
+		}
+		
 		URLStorage urlStorage = context.getBean("memURLStorage", URLStorage.class);
 		List<String> sites = config.getActiveDomains();
 		for(String s : sites) {
