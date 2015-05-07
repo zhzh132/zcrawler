@@ -12,6 +12,7 @@ public class Task {
 	
 	private String type = NORMAL;
 	private List<WebURL> urls = new ArrayList<WebURL>();
+	private String assignee;
 	
 	public String getType() {
 		return type;
@@ -37,6 +38,21 @@ public class Task {
 		WebURL u = new WebURL();
 		u.setURL(url);
 		this.addUrl(u);
+	}
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder("Task ---- ");
+		sb.append("Type: ").append(this.type).append("  ");
+		sb.append("Size: ").append(urls.size());
+		return sb.toString();
 	}
 
 }

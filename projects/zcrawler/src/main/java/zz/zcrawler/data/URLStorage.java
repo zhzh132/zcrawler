@@ -11,4 +11,5 @@ public interface URLStorage {
 	List<WebURL> get(int count);
 	boolean isVisited(String url);
 	boolean isVisited(WebURL url);
+	boolean hasUrlToVisit();
 }

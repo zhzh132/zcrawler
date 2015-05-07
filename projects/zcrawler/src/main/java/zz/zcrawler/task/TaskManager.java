@@ -16,7 +16,7 @@ public class TaskManager {
 	
 	
 	// return null if there is no task
-	public synchronized Task getTask() {
+	public synchronized Task getTask(String workerName) {
 		if(stopped) {
 			Task t = new Task();
 			t.setType(Task.STOP);
@@ -29,7 +29,12 @@ public class TaskManager {
 		}
 		Task t = new Task();
 		t.setUrls(urlList);
+		t.setAssignee(workerName);
 		return t;
+	}
+	
+	public synchronized boolean hasMoreTask() {
+		return urlStorage.hasUrlToVisit();
 	}
 	
 	public void stop() {
