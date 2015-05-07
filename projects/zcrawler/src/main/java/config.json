@@ -1,17 +1,17 @@
 {
   "global":{
-    
+    "taskSize":20
   },
   "sites":{
     "163.com":{
       "maxDepth":1,
       "seed":["http://www.163.com"],
-      "isActive":false
+      "isActive":true
     },
     "zydh123.net": {
       "maxDepth":1,
       "seed":["http://zydh123.net/"],
-      "isActive":true
+      "isActive":false
     }
   }
 }

@@ -9,7 +9,6 @@
 	<bean id="memURLStorage" class="zz.zcrawler.data.impl.MemURLStorage"></bean>
 	
 	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
-		<property name="taskSize" value="10"></property>
 		<property name="urlStorage" ref="memURLStorage"></property>
 	</bean>
 	

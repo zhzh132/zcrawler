@@ -7,7 +7,7 @@ import zz.zcrawler.url.WebURL;
 
 public class TaskManager {
 
-	private int taskSize;
+	private int taskSize = 10;
 	private URLStorage urlStorage;
 	private boolean stopped = false;
 
