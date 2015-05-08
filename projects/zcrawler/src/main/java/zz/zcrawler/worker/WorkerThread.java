@@ -1,7 +1,5 @@
 package zz.zcrawler.worker;
 
-import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -17,6 +15,7 @@ import zz.zcrawler.task.Task;
 import zz.zcrawler.task.TaskManager;
 import zz.zcrawler.url.UrlResolver;
 import zz.zcrawler.url.WebURL;
+import zz.zcrawler.utils.NetUtils;
 
 public class WorkerThread extends Thread implements Worker {
 
@@ -65,16 +64,19 @@ public class WorkerThread extends Thread implements Worker {
 			}
 			
 			try {
+				JSONObject siteConfig = this.configStorage.getSite(url.getDomain());
+				
 				log.debug(this.getName() + ": downloading " + url);
-				Document doc = Jsoup.connect(url.getURL()).get();
+				String content = NetUtils.getPageString(url, siteConfig.optJSONObject("requestConfig"));
+				Document doc = Jsoup.parse(content);
 				this.urlStorage.putUrlVisited(url);
 				
-				JSONObject siteConfig = this.configStorage.getSite(url.getDomain());
+				
 				int maxDepth = siteConfig.getInt("maxDepth");
 				if (url.getDepth() < maxDepth) {
 					extractLinks(doc, url);
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error("Error processing url: " + url, e);
 			}
 		}

@@ -19,8 +19,9 @@ public class MemURLStorage implements URLStorage {
 	
 	@Override
 	public void putUrlToVisit(WebURL url) {
-		this.urlToVisit.add(url);
-
+		if(!this.urlToVisit.contains(url)) {
+			this.urlToVisit.add(url);
+		}
 	}
 
 	@Override
