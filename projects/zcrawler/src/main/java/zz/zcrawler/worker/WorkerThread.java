@@ -2,18 +2,15 @@ package zz.zcrawler.worker;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.util.StringUtils;
 
-import zz.zcrawler.data.ConfigStorage;
-import zz.zcrawler.data.URLStorage;
+import zz.zcrawler.App;
+import zz.zcrawler.StorageFacade;
+import zz.zcrawler.parser.Parser;
+import zz.zcrawler.parser.ResultHandler;
 import zz.zcrawler.task.Task;
 import zz.zcrawler.task.TaskManager;
-import zz.zcrawler.url.UrlResolver;
 import zz.zcrawler.url.WebURL;
 import zz.zcrawler.utils.NetUtils;
 
@@ -23,8 +20,6 @@ public class WorkerThread extends Thread implements Worker {
 	
 	private byte status = Worker.WAITING;
 	private TaskManager taskManager;
-	private URLStorage urlStorage;
-	private ConfigStorage configStorage;
 	
 	@Override
 	public boolean isWaitingOrDead() {
@@ -59,100 +54,41 @@ public class WorkerThread extends Thread implements Worker {
 	
 	private void doTask(Task task) {
 		for(WebURL url : task.getUrls()) {
-			if(!shouldVisit(url)) {
+			if(!StorageFacade.getInstance().shouldVisit(url)) {
 				continue;
 			}
 			
 			try {
-				JSONObject siteConfig = this.configStorage.getSite(url.getDomain());
+				JSONObject siteConfig = StorageFacade.getInstance().getSiteConfig(url.getDomain());
 				
 				log.debug(this.getName() + ": downloading " + url);
 				String content = NetUtils.getPageString(url, siteConfig.optJSONObject("requestConfig"));
-				Document doc = Jsoup.parse(content);
-				this.urlStorage.putUrlVisited(url);
 				
-				
-				int maxDepth = siteConfig.getInt("maxDepth");
-				if (url.getDepth() < maxDepth) {
-					extractLinks(doc, url);
+				JSONArray parsers = siteConfig.optJSONArray("parsers");
+				if(parsers != null) {
+					for(int i = 0; i < parsers.length(); i++) {
+						String parserBean = parsers.getJSONObject(i).getString("parserBean");
+						String handlerBean = parsers.getJSONObject(i).getString("handlerBean");
+						Parser parser = App.context.getBean(parserBean, Parser.class);
+						ResultHandler handler = App.context.getBean(handlerBean, ResultHandler.class);
+						handler.handle(parser.parse(url, content, siteConfig));
+					}
 				}
+				
+				StorageFacade.getInstance().putUrlVisited(url);
 			} catch (Exception e) {
 				log.error("Error processing url: " + url, e);
 			}
 		}
 	}
-
-	private void extractLinks(Document doc, WebURL url) {
-		Elements links = doc.getElementsByTag("a");
-		for (Element link : links) {
-			  String linkHref = link.attr("href");
-			  linkHref = getFullUrl(url, linkHref);
-			  
-			  if(!StringUtils.isEmpty(linkHref)) {
-				  WebURL u = new WebURL();
-				  u.setURL(linkHref);
-				  u.setDepth(url.getDepth() + 1);
-				  if(shouldVisit(u)) {
-					 this.urlStorage.putUrlToVisit(u); 
-				  }
-			  }
-		}
-	}
 	
-	private String getFullUrl(WebURL url, String href) {
-		if(StringUtils.isEmpty(href)) {
-			return "";
-		}
-		String hrefLoweredCase = href.trim().toLowerCase();
-		if(hrefLoweredCase.startsWith("#")) {
-			return "";
-		}
-		if (hrefLoweredCase.contains("javascript:") || hrefLoweredCase.contains("mailto:") ||
-	            hrefLoweredCase.contains("@")) {
-			return "";
-		}
-		if(hrefLoweredCase.indexOf("://") > 0) {   // href is full url
-			return hrefLoweredCase;
-		}
-		return UrlResolver.resolveUrl(url, hrefLoweredCase);
-	}
-
-	private boolean shouldVisit(WebURL url) {
-		JSONObject siteConfig = this.configStorage.getSite(url.getDomain());
-		if(siteConfig == null) {
-			return false;
-		}
-		if(!siteConfig.getBoolean("isActive")) {
-			return false;
-		}
-		if(this.urlStorage.isVisited(url)) {
-			return false;
-		}
-		return true;
-	}
-
+	
 	public TaskManager getTaskManager() {
 		return taskManager;
 	}
 
 	public void setTaskManager(TaskManager taskManager) {
 		this.taskManager = taskManager;
-	}
-
-	public URLStorage getUrlStorage() {
-		return urlStorage;
-	}
-
-	public void setUrlStorage(URLStorage urlStorage) {
-		this.urlStorage = urlStorage;
-	}
-
-	public ConfigStorage getConfigStorage() {
-		return configStorage;
-	}
-
-	public void setConfigStorage(ConfigStorage configStorage) {
-		this.configStorage = configStorage;
 	}
 
 	@Override

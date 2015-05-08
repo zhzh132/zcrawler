@@ -2,14 +2,14 @@ package zz.zcrawler.task;
 
 import java.util.List;
 
-import zz.zcrawler.data.URLStorage;
+import zz.zcrawler.StorageFacade;
 import zz.zcrawler.url.WebURL;
 
 public class TaskManager {
 
 	private int taskSize = 10;
-	private URLStorage urlStorage;
 	private boolean stopped = false;
+	private StorageFacade storageFacade;
 
 	public TaskManager() {
 	}
@@ -23,7 +23,7 @@ public class TaskManager {
 			return t;
 		}
 		
-		List<WebURL> urlList = urlStorage.get(taskSize);
+		List<WebURL> urlList = storageFacade.getUrlStorage().get(taskSize);
 		if(urlList.isEmpty()) {
 			return null;
 		}
@@ -34,7 +34,7 @@ public class TaskManager {
 	}
 	
 	public synchronized boolean hasMoreTask() {
-		return urlStorage.hasUrlToVisit();
+		return storageFacade.getUrlStorage().hasUrlToVisit();
 	}
 	
 	public void stop() {
@@ -52,14 +52,13 @@ public class TaskManager {
 	}
 
 
-	public URLStorage getUrlStorage() {
-		return urlStorage;
+	public StorageFacade getStorageFacade() {
+		return storageFacade;
 	}
 
 
-	public void setUrlStorage(URLStorage urlStorage) {
-		this.urlStorage = urlStorage;
+	public void setStorageFacade(StorageFacade storageFacade) {
+		this.storageFacade = storageFacade;
 	}
-
 
 }

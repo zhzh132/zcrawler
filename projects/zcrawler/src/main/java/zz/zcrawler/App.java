@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import zz.zcrawler.data.ConfigStorage;
-import zz.zcrawler.data.URLStorage;
 import zz.zcrawler.task.TaskManager;
 import zz.zcrawler.url.WebURL;
 import zz.zcrawler.worker.WorkerThread;
@@ -22,13 +21,11 @@ public class App
 {
 	static Log log = LogFactory.getLog(App.class);
 	
-	public static ClassPathXmlApplicationContext context;
+	public static ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 	
 	public static void main( String[] args )
     {
 		log.debug("Crawler Start.");
-		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		
 		
 		init();
 		
@@ -61,9 +58,7 @@ public class App
 	private static WorkerThread createWorkerThread(String name) {
 		WorkerThread worker = new WorkerThread();
 		worker.setName(name);
-		worker.setConfigStorage(context.getBean(ConfigStorage.class));
 		worker.setTaskManager(context.getBean(TaskManager.class));
-		worker.setUrlStorage(context.getBean("memURLStorage", URLStorage.class));
 		return worker;
 	}
 
@@ -78,7 +73,6 @@ public class App
 			tm.setTaskSize(taskSize);
 		}
 		
-		URLStorage urlStorage = context.getBean("memURLStorage", URLStorage.class);
 		List<String> sites = config.getActiveDomains();
 		for(String s : sites) {
 			JSONObject site = config.getSite(s);
@@ -88,7 +82,7 @@ public class App
 				WebURL webUrl = new WebURL();
 				webUrl.setURL(u);
 				webUrl.setPageType(WebURL.LIST_PAGE);
-				urlStorage.putUrlToVisit(webUrl);
+				StorageFacade.getInstance().putUrlToVisit(webUrl);
 			}
 		}
 		

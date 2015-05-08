@@ -8,10 +8,19 @@
 	</bean>
 	<bean id="memURLStorage" class="zz.zcrawler.data.impl.MemURLStorage"></bean>
 	
-	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
-		<property name="urlStorage" ref="memURLStorage"></property>
-	</bean>
-	
 	
 	<bean id="workerRegister" class="zz.zcrawler.WorkerRegister"></bean>
+	
+	<bean id="storageFacade" class="zz.zcrawler.StorageFacade">
+		<property name="urlStorage" ref="memURLStorage"></property>
+		<property name="configStorage" ref="localFileConfigStorage"></property>
+	</bean>
+	
+	<bean id="taskManager" class="zz.zcrawler.task.TaskManager">
+		<property name="storageFacade" ref="storageFacade"></property>
+	</bean>
+	<bean id="linkParser" class="zz.zcrawler.parser.impl.LinkParser"></bean>
+	<bean id="linkResultHandler"
+		class="zz.zcrawler.parser.impl.LinkResultHandler">
+	</bean>
 </beans>
