@@ -1,17 +1,35 @@
 {
-  "global":{
-    "taskSize":20
+  "global": {
+    "taskSize": 20
   },
-  "sites":{
-    "163.com":{
-      "maxDepth":1,
-      "seed":["http://www.163.com"],
-      "isActive":true
+  "sites": {
+    "163.com": {
+      "maxDepth": 1,
+      "seed": [
+        "http://www.163.com"
+      ],
+      "isActive": false,
+      "requestConfig": {
+        "proxy": {
+          "host": "",
+          "port": ""
+        },
+        "headers": []
+      }
     },
     "zydh123.net": {
-      "maxDepth":1,
-      "seed":["http://zydh123.net/"],
-      "isActive":false
+      "maxDepth": 1,
+      "seed": [
+        "http://zydh123.net/"
+      ],
+      "isActive": true,
+      "parsers": [
+        {
+          "parserBean": "linkParser",
+          "handlerBean": "linkResultHandler"
+        }
+      ]
+      
     }
   }
 }

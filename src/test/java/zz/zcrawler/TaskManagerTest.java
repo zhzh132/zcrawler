@@ -20,9 +20,12 @@ public class TaskManagerTest {
 	
 	@Test
 	public void testNullTask() {
-		TaskManager tm = new TaskManager();
 		MemURLStorage urls = new MemURLStorage();
-		tm.setUrlStorage(urls);
+		StorageFacade facade = new StorageFacade();
+		facade.setUrlStorage(urls);
+		
+		TaskManager tm = new TaskManager();
+		tm.setStorageFacade(facade);
 		Task t = tm.getTask(null);
 		assertNull(t);
 	}
