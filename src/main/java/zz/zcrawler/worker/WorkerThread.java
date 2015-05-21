@@ -67,11 +67,13 @@ public class WorkerThread extends Thread implements Worker {
 				JSONArray parsers = siteConfig.optJSONArray("parsers");
 				if(parsers != null) {
 					for(int i = 0; i < parsers.length(); i++) {
-						String parserBean = parsers.getJSONObject(i).getString("parserBean");
-						String handlerBean = parsers.getJSONObject(i).getString("handlerBean");
+						String parserBean = parsers.getString(i);
 						Parser parser = App.context.getBean(parserBean, Parser.class);
-						ResultHandler handler = App.context.getBean(handlerBean, ResultHandler.class);
-						handler.handle(parser.parse(url, content, siteConfig));
+						if(parser.accept(url, content, siteConfig)) {
+							String handlerBeanName = siteConfig.getJSONObject("parserConfig").getJSONObject(parserBean).getString("handlerBean");
+							ResultHandler handler = App.context.getBean(handlerBeanName, ResultHandler.class);
+							parser.parse(url, content, siteConfig, handler);
+						}
 					}
 				}
 				
