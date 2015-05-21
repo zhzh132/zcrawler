@@ -23,12 +23,18 @@
         "http://zydh123.net/"
       ],
       "isActive": true,
-      "parsers": [
-        {
-          "parserBean": "linkParser",
-          "handlerBean": "linkResultHandler"
-        }
-      ]
+      "parsers": [ "linkParser" ],
+      "parserConfig": {
+      		"linkParser": {
+      			"acceptUrlPattern": "",
+      			"handlerBean": "linkResultHandler"
+      		}
+      },
+      "handlerConfig": {
+      		"linkResultHandler": {
+      			"acceptUrlPattern": ".*html"
+      		}
+      }
       
     }
   }
